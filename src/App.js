@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState({});
   const products = Object.values(data);
   
@@ -70,11 +70,12 @@ const App = () => {
 </Grid>
 
 <Sidebar
-  sidebar={<div><button>Close Shopping Cart</button><ul>{cartList.map(item => <li>{products.map(product => product.sku == item.sku ? product.title : null).join(" ") + ": " + item.quantity}</li>)}</ul></div>}
+  sidebar={<div><button onClick={() => setSidebarOpen(!sidebarOpen)}>Close Shopping Cart</button><ul>{cartList.map(item => <li>{products.map(product => product.sku == item.sku ? product.title : null).join(" ") + ": " + item.quantity}</li>)}</ul></div>}
   open={sidebarOpen}
   styles={{ sidebar: {background: "black", color: "white"} }}
   >
-  <button>Open Shopping Cart</button>
+    <button onClick={() => setSidebarOpen(!sidebarOpen)}>Open Shopping Cart</button> 
+
 </Sidebar>
 </div>
 
