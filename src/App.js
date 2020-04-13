@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Sidebar from "react-sidebar";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [data, setData] = useState({});
   const products = Object.values(data);
+  
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch('./data/products.json');
@@ -34,6 +37,8 @@ const App = () => {
     };
     fetchProducts();
   }, []);
+
+  const [cartList, setCartList] = useState([{"sku": "12064273040195392", "quantity": 1}, {"sku": "6090484789343891", "quantity": 3}]);
 
   const classes = useStyles();
 
@@ -62,8 +67,15 @@ const App = () => {
       <Paper class={classes.paper}>{product.currencyFormat}{product.price}</Paper>
       <Button variant="contained" color="primary">Primary</Button>
     </Grid>)}
-  
 </Grid>
+
+<Sidebar
+  sidebar={<div><button>Close Shopping Cart</button><ul>{cartList.map(item => <li>{products.map(product => product.sku == item.sku ? product.title : null).join(" ") + ": " + item.quantity}</li>)}</ul></div>}
+  open={sidebarOpen}
+  styles={{ sidebar: {background: "black", color: "white"} }}
+  >
+  <button>Open Shopping Cart</button>
+</Sidebar>
 </div>
 
   );
